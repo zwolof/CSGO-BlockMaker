@@ -1,0 +1,26 @@
+{
+	"name": "BunnyHop",
+	"code": "bhop",
+	"effects": [
+		{
+			"effect": "bunnyhop",
+			"params": {
+				"speed": 1.5
+			}
+		},
+		{
+			"effect": "gravity",
+			"params": {
+				"gravity": 0.1
+			}
+		}
+	],
+	"sprites": [
+		{
+			"sprite": "bunny",
+			"params": {
+				"scale": 0.5
+			}
+		}
+	]
+}

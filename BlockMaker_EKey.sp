@@ -92,6 +92,18 @@ public void OnClientPostAdminCheck(int client) {
 }
 
 public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3], int &weapon) {
+
+	if ((g_iOldButtons[client] & IN_USE) && !(buttons & IN_USE) && g_bFeatureEnabled && g_iCurrentGrabbedEnt[client] == -1) {
+		int iEnt = GetClientAimTarget(client, false);
+
+		if(IsValidEntity(iEnt)) {
+			ShowBlockBoxNew(iEnt, client);
+		}
+		g_iOldButtons[client] = buttons;
+
+		return Plugin_Continue;
+	}
+
 	if(g_iCurrentGrabbedEnt[client] > -1) {
 		if (buttons & IN_ATTACK)  {
 			if(g_fDistance[client] <= 800.0) {
@@ -108,16 +120,11 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 			MoveBlock(client);
 		}
 
+		g_iOldButtons[client] = buttons;
+		
 		return Plugin_Continue;
 	}
 
-	if ((g_iOldButtons[client] & IN_USE) && !(buttons & IN_USE) && g_bFeatureEnabled) {
-		int iEnt = GetClientAimTarget(client, false);
-
-		if(IsValidEntity(iEnt)) {
-			ShowBlockBoxNew(iEnt, client);
-		}
-	}
 	g_iOldButtons[client] = buttons;
 }
 

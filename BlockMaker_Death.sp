@@ -14,6 +14,7 @@ public void BM_OnLoaded() {
 	params.SetColor(255, 255, 255, 255);
 
 	BlockProps props = new BlockProps();
+	props.SetPropFloat("delay", 0.0);
 
 	BlockMaker_RegisterBlock(params, props);
 }
@@ -24,13 +25,14 @@ public void OnMapStart() {
 
 // This is called when the block is touched
 public void BM_OnBlockTouchStart(int client, int entity, GameBlock block) {
-	if(!IsPlayerAlive(client)) return;
+	if(client < 0 || !IsPlayerAlive(client)) return;
 
-	if(block.data._Params.GetBlockType() & BlockType_Death) {
-		// Set the block to triggered and set collision to false
-		PrintToChatAll("Death block triggered!");
-
-		ForcePlayerSuicide(client);
+	if(!block.data._Params.GetBlockType() & BlockType_Death) {
 		return;
 	}
+
+	// Set the block to triggered and set collision to false
+	PrintToChatAll("Death block triggered!");
+
+	ForcePlayerSuicide(client);
 }

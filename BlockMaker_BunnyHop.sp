@@ -27,17 +27,22 @@ public void OnMapStart() {
 // forward void BM_OnBlockTouchEnd(int client, GameBlock block)
 
 public void BM_OnBlockTouchStart(int client, int entity, GameBlock block) {
-	if (!g_bBlockIsTriggered && block.data._Params.GetBlockType() & BlockType_BunnyHop) {
 
-		// Set the block to triggered and set collision to false
-		PrintToChatAll("BunnyHop block triggered!");
-		g_bBlockIsTriggered = true;
-
-		// We get the property "time" from the block in the core plugin
-		// float fTime = BlockMaker_GetPropertyFloat(entity, "time");
-		CreateTimer(0.1, Timer_StartNoblock, EntIndexToEntRef(block.entity), TIMER_FLAG_NO_MAPCHANGE);
-		// Since the block needs to reset to its original state, we create a timer and set the block to untriggered in the callback
+	if(!block.data._Params.GetBlockType() & BlockType_BunnyHop) {
+		return;
 	}
+
+	if(g_bBlockIsTriggered) {
+		return;
+	}
+	g_bBlockIsTriggered = true;
+
+	// Set the block to triggered and set collision to false
+	PrintToChatAll("BunnyHop block triggered!");
+
+	// We get the property "time" from the block in the core plugin
+	// float fTime = BlockMaker_GetPropertyFloat(entity, "time");
+	CreateTimer(0.1, Timer_StartNoblock, EntIndexToEntRef(block.entity), TIMER_FLAG_NO_MAPCHANGE);
 }
 
 public Action Timer_StartNoblock(Handle timer, any ent) {
